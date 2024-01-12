@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebAssembly Example</title>
+</head>
+<body>
+    <h1>Hello from WebAssembly!</h1>
+
+    <script>
+        // Load and instantiate the WebAssembly module
+        fetch('https://emscripten.org/assets/hello_world.wasm')
+            .then(response => response.arrayBuffer())
+            .then(bytes => WebAssembly.instantiate(bytes, {}))
+            .then(result => {
+                const instance = result.instance;
+
+                // Call the exported function '_main' from the WebAssembly module
+                const resultFromWasm = instance.exports._main();
+                console.log('Result from WebAssembly:', resultFromWasm);
+            })
+            .catch(error => console.error('Error loading WebAssembly:', error));
+    </script>
+</body>
+</html>
